@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+// Widgets
+import 'restaurant.dart';
+import 'menu_button.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -7,6 +11,29 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
+  List restaurants = [
+    {
+      'name': 'Pizza',
+      'image':
+          'https://media-cdn.tripadvisor.com/media/photo-s/05/75/ff/d2/una-pizza-napoletana.jpg',
+      'price': '25',
+      'types': ['American', 'Italian']
+    },
+    {
+      'name': 'Burgers',
+      'image':
+          'https://www.gannett-cdn.com/presto/2019/04/10/PDTF/2722d7b5-fc31-4c19-a227-0a93242df2d8-SHAKESHACKcjessicagiesey-104.jpg?crop=4793,2696,x0,y0&width=3200&height=1680&fit=bounds',
+      'price': '15',
+      'types': ['Fast Food']
+    },
+    {
+      'name': 'Sushi',
+      'image':
+          'https://b.zmtcdn.com/data/pictures/chains/4/16790024/c0318b82a9003d4fe951f81980bafdab.jpg',
+      'price': '30',
+      'types': ['Japanese']
+    },
+  ];
   List icons = [
     Icons.local_pizza,
     Icons.fastfood,
@@ -21,16 +48,10 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.grey[700],
-          ),
-          onPressed: () {},
-        ),
+        leading: MenuButton(icon: Icons.search, color: Colors.grey[50]),
         actions: <Widget>[
-          MenuButton(icon: Icons.search),
-          MenuButton(icon: Icons.list),
+          MenuButton(icon: Icons.search, color: Colors.grey[200]),
+          MenuButton(icon: Icons.list, color: Colors.grey[200]),
         ],
       ),
       body: Column(
@@ -52,37 +73,7 @@ class _HomeState extends State<Home> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(7),
-                        elevation: selectedIndex == index ? 3 : 0,
-                        child: Container(
-                          height: 70,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: selectedIndex == index
-                                ? Colors.indigo
-                                : Colors.white,
-                          ),
-                          child: Icon(
-                            icons[index % 4],
-                            color: selectedIndex == index
-                                ? Colors.white
-                                : Colors.grey,
-                            size: 50,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                  return foodTypeButton(index);
                 },
               ),
             ),
@@ -110,113 +101,15 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.all(16.0),
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return Container(
-                    height: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(
-                            'https://i.pinimg.com/474x/8c/93/d3/8c93d35df867bf1e169cbd2c4718b1f2--cookbook-photography-ingredient-photography.jpg',
-                            fit: BoxFit.cover,
-                            height: double.infinity,
-                            width: double.infinity,
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          height: 110,
-                          width: 382,
-                          child: Container(
-                            padding: EdgeInsets.all(16),
-                            height: 110,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Pizza House',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 25),
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'Min',
-                                          style: TextStyle(
-                                              fontFamily: 'Organo',
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 20,
-                                              color: Colors.grey[700]),
-                                        ),
-                                        Text(' - \$20',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
-                                                color: Colors.grey[700]))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 4.0),
-                                          child: Chip(
-                                            label: Text(
-                                              'American',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.grey[600],
-                                              ),
-                                            ),
-                                            backgroundColor: Colors.grey[50],
-                                          ),
-                                        ),
-                                        Chip(
-                                          label: Text(
-                                            'Italian',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey[600],
-                                            ),
-                                          ),
-                                          backgroundColor: Colors.grey[50],
-                                        )
-                                      ],
-                                    ),
-                                    Text('Test')
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  return Restaurant(
+                    name: restaurants[index]['name'],
+                    image: restaurants[index]['image'],
+                    price: restaurants[index]['price'],
+                    types: restaurants[index]['types'],
                   );
                 },
                 separatorBuilder: (context, index) => SizedBox(height: 20),
-                itemCount: 20,
+                itemCount: restaurants.length,
               ),
             ),
           ),
@@ -224,32 +117,30 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
-class MenuButton extends StatelessWidget {
-  final icon;
-  MenuButton({this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        color: Colors.transparent,
-        child: Center(
+  GestureDetector foodTypeButton(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(right: 20.0),
+        child: Material(
+          borderRadius: BorderRadius.circular(7),
+          elevation: selectedIndex == index ? 3 : 0,
           child: Container(
+            height: 70,
+            width: 70,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey[200]),
-            height: 40,
-            width: 40,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(40),
-              onTap: () {},
-              child: Icon(
-                icon,
-                color: Colors.grey[700],
-              ),
+              borderRadius: BorderRadius.circular(7),
+              color: selectedIndex == index ? Colors.indigo : Colors.white,
+            ),
+            child: Icon(
+              icons[index % 4],
+              color: selectedIndex == index ? Colors.white : Colors.grey,
+              size: 50,
             ),
           ),
         ),
